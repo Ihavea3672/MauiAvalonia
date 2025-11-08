@@ -78,18 +78,22 @@ Even with the milestones above, the Avalonia backend still trails the Android/iO
 - **Map:** Evaluate `XAML.MapControl.Avalonia` (net9) as a drop-in for pins/polygons and, if it falls short, prototype a Skia-based tile renderer that plugs into `GraphicsView`. Choose the better path, build a `MapHandler`, and document any desktop-only limitations so 6.1 item 1 can be checked off with confidence.
 
 ### 6.2 Navigation, Shell, and Windowing
-- [ ] Finish Shell support: keep `CurrentPage`, flyout selection, tab bar selection, toolbar items, and route navigation events (navigating/navigated) in sync with MAUI’s shell controller.
-- [ ] Implement the full `NavigationPage` stack (back button visibility, navigation transitions, modal stack) and wire drag rectangles/title bar customization through `IWindow.TitleBar`.
-- [ ] Support `AppThemeBinding`, multi-window scenarios (opening secondary windows, closing, focus) and host-level services such as `IWindowLifecycleHooks`.
-- [ ] Add menu bar parity (platform menu merging, keyboard shortcuts) and custom chrome (drag rectangles, passthrough elements, caption buttons).
+- [x] Finish Shell support: keep `CurrentPage`, flyout selection, tab bar selection, toolbar items, and route navigation events (navigating/navigated) in sync with MAUI’s shell controller.
+- [x] Implement the full `NavigationPage` stack (back button visibility, navigation transitions, modal stack) and wire drag rectangles/title bar customization through `IWindow.TitleBar`.
+- [x] Support `AppThemeBinding`, multi-window scenarios (opening secondary windows, closing, focus) and host-level services such as `IWindowLifecycleHooks`.
+- [x] Add menu bar parity (platform menu merging, keyboard shortcuts) and custom chrome (drag rectangles, passthrough elements, caption buttons).
 - [x] Provide a default Shell flyout presenter so Shell apps render navigation items, track selection, and invoke `OnFlyoutItemSelectedAsync` even without a custom flyout view.
 
 #### Remaining work / next steps
-- **Shell orchestration:** Build an `AvaloniaShellPresenter` that mirrors WinUI’s `ShellSectionNavigationManager`, keeping `CurrentPage`, flyout selection, tab headers, and toolbar items synchronized with MAUI’s routing events so Shell apps no longer desync when tabs/flyouts change.
-- **Navigation stack + transitions:** Replace the current “last page wins” swapper with a per-window navigation stack that tracks push/pop/modal operations, surfaces back button visibility, and plays Avalonia page transitions while honoring `NavigationPageHandler` APIs (title view, toolbar, drag rectangles).
-- **Multi-window + chrome:** Extend `AvaloniaWindowHost` so each MAUI `IWindow` gets its own navigation root, menu bar merge, and caption controls. This infrastructure should also expose `IWindowLifecycleHooks`, AppThemeBinding updates, and window focus events so multi-window parity matches WinUI/MacCatalyst.
+- **Shell regression coverage:** Add handler/device tests that validate Shell tab/flyout synchronization (including toolbar updates) so future refactors don’t regress navigation events.
+- **Navigation polish:** Layer in optional page transition effects (slide, fade, depth) plus configuration hooks, and document how to customize drag rectangles/title bars per window.
+- **Multi-window QA:** Stress multi-window scenarios (open/close storms, focus juggling, theme switches) and wire CI smoke tests plus sample pages showing AppThemeBinding + toolbar/menu sync across windows.
 
 > **2026-05-10 update:** The sample app now exercises Shell tabs using a `TabBar` with multiple `ShellContent` entries mapped onto the new Avalonia TabControl handler. Nested `TabbedPage` instances remain unsupported as Shell content (the MAUI core throws before the Avalonia handler can intervene), so the sample keeps the `TabsPage` demo available as a routed page instead. Parity work therefore focuses on real Shell presenters, not on bypassing upstream restrictions.
+
+> **2026-05-11 update:** `AvaloniaFlyoutViewHandler` now embeds an `AvaloniaShellPresenter` that mirrors WinUI’s tab bar experience. The presenter keeps Shell tab selection, flyout updates, and detail rendering in sync, while the new `AvaloniaStackNavigationManager` caches the MAUI navigation stack, disposes popped pages, and runs cross-fade transitions for push/pop requests. Shell navigation therefore behaves consistently across tabs and routes, setting us up to remove the routed `TabbedPage` workaround once dotnet/maui lifts the core TabbedPage restriction.
+
+> **2026-05-12 update:** Desktop lifetimes now support the full MAUI window contract. `IAvaloniaWindowHost` tracks every MAUI `IWindow`, scopes DI per window, attaches a dedicated `AvaloniaNavigationRoot`, and dispatches lifecycle events so `IApplication.OpenWindow` and `CloseWindow` behave just like WinUI/MacCatalyst. `AvaloniaWindowHandler` listens to Avalonia’s `Activated`/`Deactivated` events so `AppThemeBinding`, toolbar/menu updates, and `IWindowLifecycleHooks` stay in sync as users juggle multiple windows, and custom chrome/drag rectangles apply per-window with safe-area padding updates.
 
 ### 6.3 Platform Services & Essentials APIs
 - [ ] Bridge MAUI Essentials APIs to Avalonia or desktop equivalents: AppActions, Browser, Clipboard rich formats, Email/Sms, FilePicker/FolderPicker, Launcher, MediaPicker, Permissions, Preferences, SecureStorage, Share, Vibration, Geolocation, Geocoding, Connectivity, DeviceInformation, Haptics, Speech, and Sensors.

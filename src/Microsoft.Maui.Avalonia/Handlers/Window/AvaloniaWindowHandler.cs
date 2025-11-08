@@ -56,15 +56,17 @@ public class AvaloniaWindowHandler : ElementHandler<IWindow, AvaloniaWindowContr
 	protected override void ConnectHandler(AvaloniaWindowControl platformView)
 	{
 		VirtualView?.Created();
-		platformView.Opened += OnOpened;
 		platformView.Closed += OnClosed;
+		platformView.Activated += OnActivated;
+		platformView.Deactivated += OnDeactivated;
 	}
 
 	protected override void DisconnectHandler(AvaloniaWindowControl platformView)
 	{
 		DetachSafeAreaMonitoring();
-		platformView.Opened -= OnOpened;
 		platformView.Closed -= OnClosed;
+		platformView.Activated -= OnActivated;
+		platformView.Deactivated -= OnDeactivated;
 	}
 
 	static void MapTitle(AvaloniaWindowHandler handler, IWindow window)
@@ -292,7 +294,9 @@ public class AvaloniaWindowHandler : ElementHandler<IWindow, AvaloniaWindowContr
 		_safeAreaNavigationRoot.SetContentPadding(padding);
 	}
 
-	void OnOpened(object? sender, System.EventArgs e) => VirtualView?.Activated();
-
 	void OnClosed(object? sender, System.EventArgs e) => VirtualView?.Destroying();
+
+	void OnActivated(object? sender, System.EventArgs e) => VirtualView?.Activated();
+
+	void OnDeactivated(object? sender, System.EventArgs e) => VirtualView?.Deactivated();
 }

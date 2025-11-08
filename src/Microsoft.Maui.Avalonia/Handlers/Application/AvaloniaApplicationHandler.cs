@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Maui;
 using Microsoft.Maui.Avalonia.Internal;
 using Microsoft.Maui.Handlers;
+using Microsoft.Maui.Hosting;
 using AvaloniaApplication = Avalonia.Application;
 
 namespace Microsoft.Maui.Avalonia.Handlers;
@@ -39,12 +40,18 @@ public class AvaloniaApplicationHandler : ElementHandler<IApplication, AvaloniaA
 		return AvaloniaApplication.Current ?? throw new InvalidOperationException("Avalonia Application is not available.");
 	}
 
-	static void MapOpenWindow(AvaloniaApplicationHandler handler, IApplication application, object? args) =>
-		LogNotImplemented(nameof(IApplication.OpenWindow));
+	static void MapOpenWindow(AvaloniaApplicationHandler handler, IApplication application, object? args)
+	{
+		if (handler.MauiContext?.Services.GetService<IAvaloniaWindowHost>() is not { } windowHost)
+			return;
 
-	static void MapCloseWindow(AvaloniaApplicationHandler handler, IApplication application, object? args) =>
-		LogNotImplemented(nameof(IApplication.CloseWindow));
+		windowHost.OpenWindow(application, args as OpenWindowRequest);
+	}
 
-	static void LogNotImplemented(string operation) =>
-		Console.WriteLine($"[AvaloniaApplicationHandler] '{operation}' is not implemented yet for the Avalonia backend.");
+	static void MapCloseWindow(AvaloniaApplicationHandler handler, IApplication application, object? args)
+	{
+		if (args is IWindow window && window.Handler?.PlatformView is AvaloniaWindowControl platformWindow)
+			platformWindow.Close();
+	}
+
 }
