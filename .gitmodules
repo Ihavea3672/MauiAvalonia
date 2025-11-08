@@ -1,0 +1,6 @@
+[submodule "extern/maui"]
+	path = extern/maui
+	url = https://github.com/wieslawsoltes/maui.git
+[submodule "extern/Avalonia"]
+	path = extern/Avalonia
+	url = https://github.com/wieslawsoltes/Avalonia.git
