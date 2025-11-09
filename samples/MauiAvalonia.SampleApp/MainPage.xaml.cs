@@ -35,4 +35,19 @@ public partial class MainPage : ContentPage
 			System.Diagnostics.Debug.WriteLine($"Navigation to {nameof(TabsPage)} failed: {ex}");
 		}
 	}
+
+	private async void OnNavigateToMatrixClicked(object? sender, EventArgs e)
+	{
+		if (Shell.Current is null)
+			return;
+
+		try
+		{
+			await Shell.Current.GoToAsync("///sample-matrix/matrix-overview");
+		}
+		catch (Exception ex)
+		{
+			System.Diagnostics.Debug.WriteLine($"Navigation to sample matrix failed: {ex}");
+		}
+	}
 }

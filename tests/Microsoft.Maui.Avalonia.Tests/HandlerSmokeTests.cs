@@ -1,6 +1,8 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using LibVLCSharp.Shared;
 using Microsoft.Maui.Avalonia.Handlers;
@@ -18,16 +20,19 @@ namespace Microsoft.Maui.Avalonia.Tests;
 public class HandlerSmokeTests
 {
 	[Fact]
-	public void MapHandlerCreatesPlatformView()
+	public async Task MapHandlerCreatesPlatformView()
 	{
-		var services = new ServiceCollection().BuildServiceProvider();
-		var context = new MauiContext(services);
+		await AvaloniaHeadlessFixture.Session.Dispatch(() =>
+		{
+			var services = new ServiceCollection().BuildServiceProvider();
+			var context = new MauiContext(services);
 
-		var handler = new AvaloniaMapHandler();
-		handler.SetMauiContext(context);
-		handler.SetVirtualView(new Map());
+			var handler = new AvaloniaMapHandler();
+			handler.SetMauiContext(context);
+			handler.SetVirtualView(new Map());
 
-		Assert.NotNull(handler.PlatformView);
+			Assert.NotNull(handler.PlatformView);
+		}, CancellationToken.None);
 	}
 
 	[Fact]
@@ -105,27 +110,30 @@ public class HandlerSmokeTests
 	}
 
 	[Fact]
-	public void MenuFlyoutUpdatesOnPropertyChanges()
+	public async Task MenuFlyoutUpdatesOnPropertyChanges()
 	{
-		var services = new ServiceCollection().BuildServiceProvider();
-		var context = new MauiContext(services);
+		await AvaloniaHeadlessFixture.Session.Dispatch(() =>
+		{
+			var services = new ServiceCollection().BuildServiceProvider();
+			var context = new MauiContext(services);
 
-		var flyout = new Microsoft.Maui.Controls.MenuFlyout();
-		var item = new Microsoft.Maui.Controls.MenuFlyoutItem { Text = "Original" };
-		flyout.Add(item);
+			var flyout = new Microsoft.Maui.Controls.MenuFlyout();
+			var item = new Microsoft.Maui.Controls.MenuFlyoutItem { Text = "Original" };
+			flyout.Add(item);
 
-		var handler = new AvaloniaMenuFlyoutHandler();
-		handler.SetMauiContext(context);
-		handler.SetVirtualView(flyout);
+			var handler = new AvaloniaMenuFlyoutHandler();
+			handler.SetMauiContext(context);
+			handler.SetVirtualView(flyout);
 
-		var platformItem = handler.PlatformView.Items[0] as global::Avalonia.Controls.MenuItem;
-		Assert.NotNull(platformItem);
-		Assert.Equal("Original", platformItem!.Header);
+			var platformItem = handler.PlatformView.Items[0] as global::Avalonia.Controls.MenuItem;
+			Assert.NotNull(platformItem);
+			Assert.Equal("Original", platformItem!.Header);
 
-		item.Text = "Updated";
-		var updatedItem = handler.PlatformView.Items[0] as global::Avalonia.Controls.MenuItem;
-		Assert.NotNull(updatedItem);
-		Assert.Equal("Updated", updatedItem!.Header);
+			item.Text = "Updated";
+			var updatedItem = handler.PlatformView.Items[0] as global::Avalonia.Controls.MenuItem;
+			Assert.NotNull(updatedItem);
+			Assert.Equal("Updated", updatedItem!.Header);
+		}, CancellationToken.None);
 	}
 
 	static bool HasDispatcher() =>

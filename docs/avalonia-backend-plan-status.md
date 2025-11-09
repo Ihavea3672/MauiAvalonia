@@ -156,6 +156,6 @@ The numbered checklist below is the actionable plan to bring the Avalonia backen
 | Tooling & QA | .NET/XAML Hot Reload | Works with Avalonia host, multiple windows | ❌ Missing | Not verified/documented; known gaps remain. |
 | Tooling & QA | Avalonia DevTools toggle | Controlled via CLI/env var | ✅ Done | `MAUI_AVALONIA_DEVTOOLS` wiring exists. |
 | Tooling & QA | Automated tests | Handler + integration tests in `tests/` | ⚠️ Partial | Added a `Microsoft.Maui.Avalonia.Tests` smoke suite that exercises handler registration and Map creation, but there are no UI automation or parity suites yet. |
-| Tooling & QA | Sample coverage | Matrix of Shell, Essentials, media, navigation samples | ❌ Missing | Only the starter sample exists. |
+| Tooling & QA | Sample coverage | Matrix of Shell, Essentials, media, navigation samples | ✅ Done | `samples/MauiAvalonia.SampleApp` now exposes Shell navigation, tabs, flyout, data grid, drag/drop, and GraphicsView demos plus media/toolkit samples via the Sample Matrix flyout. |
 | Tooling & QA | CI/nightly packages | Cross-platform CI runs, nightly NuGets | ❌ Missing | No pipelines or packages. |
 | Tooling & QA | `dotnet new maui-avalonia` template | Template plus docs for onboarding | ❌ Missing | Not started. |

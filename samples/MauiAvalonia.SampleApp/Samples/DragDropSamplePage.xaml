@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MauiAvalonia.SampleApp.DragDropSamplePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Drag &amp; Drop">
+
+    <VerticalStackLayout Padding="24,22,24,32" Spacing="18">
+        <Label
+            Text="Drag &amp; drop board"
+            FontSize="22"
+            FontAttributes="Bold" />
+        <Label
+            Text="Cards use DragGestureRecognizer/DropGestureRecognizer so Avalonia can be tested end-to-end."
+            FontSize="13"
+            TextColor="#555" />
+
+        <Grid ColumnDefinitions="*,*" ColumnSpacing="18" RowSpacing="12">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <VerticalStackLayout Grid.Column="0" Grid.Row="0">
+                <Label Text="Backlog" FontAttributes="Bold" />
+                <Label Text="{Binding BacklogSummary}" FontSize="12" TextColor="#666" />
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Grid.Column="1" Grid.Row="0">
+                <Label Text="Done" FontAttributes="Bold" />
+                <Label Text="{Binding DoneSummary}" FontSize="12" TextColor="#666" />
+            </VerticalStackLayout>
+
+            <Border
+                x:Name="BacklogDropZone"
+                Grid.Column="0"
+                Grid.Row="1"
+                Stroke="#D5D5EB"
+                StrokeShape="RoundRectangle 12"
+                StrokeThickness="2"
+                BackgroundColor="#F9F9FF">
+                <Border.GestureRecognizers>
+                    <DropGestureRecognizer AllowDrop="True" ClassId="Backlog" Drop="OnDrop" />
+                </Border.GestureRecognizers>
+                <CollectionView
+                    ItemsSource="{Binding BacklogTasks}"
+                    SelectionMode="None"
+                    Margin="8"
+                    VerticalOptions="Fill">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border
+                                BackgroundColor="#FFFFFF"
+                                Stroke="#D9D9D9"
+                                StrokeShape="RoundRectangle 10"
+                                Padding="12"
+                                Margin="0,0,0,8">
+                                <Border.GestureRecognizers>
+                                    <DragGestureRecognizer DragStarting="OnDragStarting" />
+                                </Border.GestureRecognizers>
+                                <VerticalStackLayout Spacing="4">
+                                    <Label Text="{Binding Title}" FontAttributes="Bold" />
+                                    <Label Text="{Binding Description}" FontSize="12" TextColor="#666" />
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Border>
+
+            <Border
+                x:Name="DoneDropZone"
+                Grid.Column="1"
+                Grid.Row="1"
+                Stroke="#C9EDD6"
+                StrokeShape="RoundRectangle 12"
+                StrokeThickness="2"
+                BackgroundColor="#F4FFF4">
+                <Border.GestureRecognizers>
+                    <DropGestureRecognizer AllowDrop="True" ClassId="Done" Drop="OnDrop" />
+                </Border.GestureRecognizers>
+                <CollectionView
+                    ItemsSource="{Binding DoneTasks}"
+                    SelectionMode="None"
+                    Margin="8"
+                    VerticalOptions="Fill">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border
+                                BackgroundColor="#FFFFFF"
+                                Stroke="#BEE3CE"
+                                StrokeShape="RoundRectangle 10"
+                                Padding="12"
+                                Margin="0,0,0,8">
+                                <Border.GestureRecognizers>
+                                    <DragGestureRecognizer DragStarting="OnDragStarting" />
+                                </Border.GestureRecognizers>
+                                <VerticalStackLayout Spacing="4">
+                                    <Label Text="{Binding Title}" FontAttributes="Bold" />
+                                    <Label Text="{Binding Description}" FontSize="12" TextColor="#666" />
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Border>
+        </Grid>
+    </VerticalStackLayout>
+
+</ContentPage>

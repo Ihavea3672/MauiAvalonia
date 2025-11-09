@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MauiAvalonia.SampleApp.SampleMatrixPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Sample Matrix">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24,22,24,32" Spacing="18">
+            <Label
+                Text="Avalonia sample matrix"
+                FontSize="24"
+                FontAttributes="Bold"
+                SemanticProperties.HeadingLevel="Level1" />
+
+            <Label
+                Text="Each card launches a focused page that runs on the Avalonia backend so handlers can be tested in CI."
+                FontSize="14"
+                TextColor="#555" />
+
+            <CollectionView
+                x:Name="ScenariosCollection"
+                ItemsSource="{Binding Scenarios}"
+                SelectionMode="None">
+                <CollectionView.EmptyView>
+                    <Label Text="No scenarios loaded." Margin="12" />
+                </CollectionView.EmptyView>
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="14" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border
+                            Stroke="#D1D1D1"
+                            StrokeShape="RoundRectangle 12"
+                            BackgroundColor="#FAFAFF"
+                            Padding="16"
+                            StrokeThickness="1">
+                            <Grid
+                                ColumnDefinitions="*,Auto"
+                                RowDefinitions="Auto,Auto,Auto">
+                                <Label
+                                    Grid.Row="0"
+                                    Text="{Binding Title}"
+                                    FontAttributes="Bold"
+                                    FontSize="18" />
+                                <Label
+                                    Grid.Row="1"
+                                    Text="{Binding Description}"
+                                    FontSize="13"
+                                    TextColor="#555"
+                                    Margin="0,6,36,4" />
+                                <Label
+                                    Grid.Row="2"
+                                    Text="{Binding FeatureList}"
+                                    FontSize="12"
+                                    TextColor="#7F7F7F" />
+
+                                <Button
+                                    Grid.Column="1"
+                                    Grid.RowSpan="3"
+                                    Text="Open"
+                                    Padding="18,6"
+                                    Clicked="OnNavigateToScenario"
+                                    CommandParameter="{Binding Route}" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

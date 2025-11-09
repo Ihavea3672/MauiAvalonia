@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Microsoft",
+  "classifications": [
+    "MAUI",
+    "Avalonia",
+    "Desktop",
+    "App"
+  ],
+  "name": "MAUI + Avalonia sample app",
+  "identity": "MauiAvalonia.Template",
+  "shortName": "maui-avalonia",
+  "sourceName": "MauiAvaloniaTemplate",
+  "preferNameDirectory": true,
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  }
+}

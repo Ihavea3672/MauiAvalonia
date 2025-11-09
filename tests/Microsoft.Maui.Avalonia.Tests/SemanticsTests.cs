@@ -1,3 +1,5 @@
+using System.Threading;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Microsoft.Maui.Avalonia.Accessibility;
 using Xunit;
@@ -7,17 +9,20 @@ namespace Microsoft.Maui.Avalonia.Tests;
 public sealed class SemanticsTests
 {
 	[Fact]
-	public void ApplySetsAutomationProperties()
+	public async Task ApplySetsAutomationProperties()
 	{
-		var label = new Microsoft.Maui.Controls.Label();
-		Microsoft.Maui.Controls.SemanticProperties.SetDescription(label, "Accessible text");
-		Microsoft.Maui.Controls.SemanticProperties.SetHint(label, "Helpful hint");
+		await AvaloniaHeadlessFixture.Session.Dispatch(() =>
+		{
+			var label = new Microsoft.Maui.Controls.Label();
+			Microsoft.Maui.Controls.SemanticProperties.SetDescription(label, "Accessible text");
+			Microsoft.Maui.Controls.SemanticProperties.SetHint(label, "Helpful hint");
 
-		var control = new TextBlock();
+			var control = new TextBlock();
 
-		AvaloniaSemanticNode.Apply(control, label);
+			AvaloniaSemanticNode.Apply(control, label);
 
-		Assert.Equal("Accessible text", global::Avalonia.Automation.AutomationProperties.GetName(control));
-		Assert.Equal("Helpful hint", global::Avalonia.Automation.AutomationProperties.GetHelpText(control));
+			Assert.Equal("Accessible text", global::Avalonia.Automation.AutomationProperties.GetName(control));
+			Assert.Equal("Helpful hint", global::Avalonia.Automation.AutomationProperties.GetHelpText(control));
+		}, CancellationToken.None);
 	}
 }

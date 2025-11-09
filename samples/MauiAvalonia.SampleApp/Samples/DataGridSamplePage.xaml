@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MauiAvalonia.SampleApp.DataGridSamplePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Data Grid">
+
+    <VerticalStackLayout Padding="24,22,24,32" Spacing="16">
+        <Label
+            Text="Data grid (CollectionView)"
+            FontSize="22"
+            FontAttributes="Bold" />
+
+        <Label
+            Text="The grid uses CollectionView with Grid templates to mimic headers, column sizing, and sorting without platform-specific renderers."
+            FontSize="13"
+            TextColor="#555" />
+
+        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="12">
+            <Button Text="Sort by customer" Clicked="OnSortByCustomer" />
+            <Button Grid.Column="1" Text="Sort by status" Clicked="OnSortByStatus" />
+            <Button Grid.Column="2" Text="Sort by revenue" Clicked="OnSortByRevenue" />
+        </Grid>
+
+        <Border
+            Padding="0"
+            Stroke="#D0D0E0"
+            StrokeThickness="1"
+            StrokeShape="RoundRectangle 6"
+            BackgroundColor="#F1F1F9">
+            <Grid ColumnDefinitions="90,*,120,120,110" Padding="12,8">
+                <Label Text="Order" FontAttributes="Bold" />
+                <Label Grid.Column="1" Text="Customer" FontAttributes="Bold" />
+                <Label Grid.Column="2" Text="Status" FontAttributes="Bold" />
+                <Label Grid.Column="3" Text="Total" FontAttributes="Bold" />
+                <Label Grid.Column="4" Text="Progress" FontAttributes="Bold" />
+            </Grid>
+        </Border>
+
+        <CollectionView
+            ItemsSource="{Binding Orders}"
+            SelectionMode="None"
+            HeightRequest="360">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="6" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border
+                        StrokeThickness="1"
+                        Stroke="#E2E2E2"
+                        StrokeShape="RoundRectangle 6"
+                        BackgroundColor="{Binding RowBackground}"
+                        Padding="12,8">
+                        <Grid ColumnDefinitions="90,*,120,120,110" ColumnSpacing="10">
+                            <Label Text="{Binding OrderId}" />
+                            <Label Grid.Column="1" Text="{Binding Customer}" />
+                            <Label Grid.Column="2" Text="{Binding Status}" />
+                            <Label
+                                Grid.Column="3"
+                                Text="{Binding Total, StringFormat='${0:F0}'}"
+                                FontAttributes="Bold"
+                                HorizontalTextAlignment="End" />
+                            <ProgressBar
+                                Grid.Column="4"
+                                Progress="{Binding Progress}"
+                                HeightRequest="14" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
+            <CheckBox
+                x:Name="HighValueOnly"
+                IsChecked="{Binding IsHighValueFilterEnabled}"
+                CheckedChanged="OnHighValueFilterChanged" />
+            <Label Text="Show only orders over $2,000" VerticalTextAlignment="Center" />
+        </HorizontalStackLayout>
+    </VerticalStackLayout>
+
+</ContentPage>

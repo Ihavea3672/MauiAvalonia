@@ -1,0 +1,19 @@
+#if NET8_0
+using System;
+using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
+
+namespace MauiAvaloniaTemplate;
+
+internal static class AvaloniaProgram
+{
+	[STAThread]
+	public static void Main(string[] args) =>
+		BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
+
+	public static AppBuilder BuildAvaloniaApp() =>
+		AppBuilder.Configure<AvaloniaHostApplication>()
+			.UsePlatformDetect()
+			.LogToTrace();
+}
+#endif

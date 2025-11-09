@@ -1,0 +1,50 @@
+name: Nightly Release
+
+on:
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+
+jobs:
+  nightly:
+    runs-on: ubuntu-latest
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+      BASE_VERSION: 0.1.0
+      PACKAGE_VERSION: ${{ format('{0}-nightly.{1}', env.BASE_VERSION, github.run_number) }}
+      PACKAGE_OUTPUT: artifacts
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+
+      - name: Install .NET MAUI workload
+        run: dotnet workload install maui
+
+      - name: Restore solution
+        run: dotnet restore MauiAvalonia.sln
+
+      - name: Build solution
+        run: dotnet build MauiAvalonia.sln -c Release --no-restore
+
+      - name: Run handler tests
+        run: dotnet test tests/Microsoft.Maui.Avalonia.Tests/Microsoft.Maui.Avalonia.Tests.csproj -c Release --no-build
+
+      - name: Pack NuGet package
+        run: dotnet pack src/Microsoft.Maui.Avalonia/Microsoft.Maui.Avalonia.csproj -c Release -o ${{ env.PACKAGE_OUTPUT }} --no-build /p:PackageVersion=${{ env.PACKAGE_VERSION }}
+
+      - name: Upload nightly artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: maui-avalonia-nightly
+          path: ${{ env.PACKAGE_OUTPUT }}/*.nupkg
+
+      - name: Publish to NuGet
+        if: ${{ secrets.NUGET_API_KEY != '' }}
+        run: dotnet nuget push ${{ env.PACKAGE_OUTPUT }}/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate

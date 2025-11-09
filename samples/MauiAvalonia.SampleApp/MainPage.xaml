@@ -36,6 +36,12 @@
                 SemanticProperties.Hint="Navigates to the standalone TabbedPage sample (outside Shell)"
                 Clicked="OnNavigateToTabsClicked"
                 HorizontalOptions="Fill" />
+
+            <Button
+                Text="Open Sample Matrix"
+                SemanticProperties.Hint="Jumps to the Sample Matrix flyout container"
+                Clicked="OnNavigateToMatrixClicked"
+                HorizontalOptions="Fill" />
         </VerticalStackLayout>
     </ScrollView>
 

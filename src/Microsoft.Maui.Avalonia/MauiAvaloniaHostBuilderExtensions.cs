@@ -91,6 +91,8 @@ public static class MauiAvaloniaHostBuilderExtensions
 			TryAddControlsHandler(handlers, "Microsoft.Maui.Controls.TabbedPage", typeof(AvaloniaTabbedViewHandler));
 			handlers.AddHandler<IWindow, AvaloniaWindowHandler>();
 			handlers.AddHandler<IContentView, AvaloniaContentViewHandler>();
+			handlers.AddHandler<IBorderView, AvaloniaBorderHandler>();
+			TryAddControlsHandler(handlers, "Microsoft.Maui.Controls.Border", typeof(AvaloniaBorderHandler));
 			handlers.AddHandler<ILayout, AvaloniaLayoutHandler>();
 			handlers.AddHandler<IStackLayout, AvaloniaStackLayoutHandler>();
 			handlers.AddHandler<IGridLayout, AvaloniaGridLayoutHandler>();

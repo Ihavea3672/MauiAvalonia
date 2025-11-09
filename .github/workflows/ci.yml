@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - windows-latest
+          - macos-latest
+          - ubuntu-latest
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+
+      - name: Install .NET MAUI workload
+        run: dotnet workload install maui
+
+      - name: Restore solution
+        run: dotnet restore MauiAvalonia.sln
+
+      - name: Build solution
+        run: dotnet build MauiAvalonia.sln -c Release --no-restore
+
+      - name: Run handler tests
+        run: dotnet test tests/Microsoft.Maui.Avalonia.Tests/Microsoft.Maui.Avalonia.Tests.csproj -c Release --no-build
+
+      - name: Build sample matrix
+        run: dotnet build samples/MauiAvalonia.SampleApp/MauiAvalonia.SampleApp.csproj -c Release -f net8.0 --no-restore

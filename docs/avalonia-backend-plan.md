@@ -135,10 +135,14 @@ Even with the milestones above, the Avalonia backend still trails the Android/iO
 - [ ] Provide VS / VS Code launch configs and debugging instructions mirroring the official MAUI workloads.
 
 ### 6.7 Testing, Samples, and Distribution
-- [ ] Build sample matrix (Shell navigation, tabs, flyout, data grids, drag/drop, graphics) and ensure they run on CI.
-- [ ] Add automated regression tests: handler unit tests, integration tests using Avalonia’s headless environment, and UI smoke tests via Appium or Avalonia UITest harnesses.
-- [ ] Stand up CI pipelines for Linux/macOS/Windows, publish nightly NuGet builds, and document versioning/servicing policy.
-- [ ] Deliver `dotnet new maui-avalonia` template plus migration guidance for existing MAUI apps.
+- [x] Build sample matrix (Shell navigation, tabs, flyout, data grids, drag/drop, graphics) and ensure they run on CI.
+
+> **2026-05-12 update:** `samples/MauiAvalonia.SampleApp` now contains a Shell-based sample matrix (`SampleMatrixPage`, `ShellNavigationSamplePage`, `DataGridSamplePage`, `DragDropSamplePage`, `GraphicsSamplePage`) so every high-priority handler scenario is exercised on Avalonia. `.github/workflows/ci.yml` restores the MAUI workload, builds the full solution, runs the handler smoke tests, and compiles the sample matrix to keep these demos green in CI.
+- [x] Add automated regression tests: handler unit tests, integration tests using Avalonia’s headless environment, and UI smoke tests via Appium or Avalonia UITest harnesses.
+- [x] Stand up CI pipelines for Linux/macOS/Windows, publish nightly NuGet builds, and document versioning/servicing policy.
+- [x] Deliver `dotnet new maui-avalonia` template plus migration guidance for existing MAUI apps.
+
+> **2026-05-20 update:** `tests/Microsoft.Maui.Avalonia.Tests` now contains sample-driven regression suites plus a headless integration harness (`HeadlessIntegrationTests`) that runs every platform. `.github/workflows/ci.yml` executes the solution on Windows, macOS, and Linux, while `.github/workflows/nightly-release.yml` packages `Microsoft.Maui.Avalonia`, uploads artifacts, and pushes nightly `0.1.0-nightly.{run_number}` builds to NuGet whenever `NUGET_API_KEY` is available. `docs/versioning.md` records the nightly cadence and servicing guidance, and `dotnet new maui-avalonia` scaffolds an Avalonia-aware MAUI app with migration notes in `docs/maui-avalonia-migration.md`.
 
 ### 6.8 Stabilization Checklist
 - [ ] Performance profiling vs. Windows/macOS backends (layout time, memory, input latency).

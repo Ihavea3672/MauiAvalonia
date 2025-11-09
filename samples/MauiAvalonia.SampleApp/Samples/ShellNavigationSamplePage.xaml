@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MauiAvalonia.SampleApp.ShellNavigationSamplePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Shell Navigation">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24,22,24,32" Spacing="16">
+            <Label
+                Text="Shell route exercises"
+                FontSize="22"
+                FontAttributes="Bold"
+                SemanticProperties.HeadingLevel="Level1" />
+
+            <Label
+                Text="Each action calls Shell.Current.GoToAsync so we can verify that Avalonia routes, query parameters, and back stack integrations match WinUI/MacCatalyst."
+                FontSize="13"
+                TextColor="#555" />
+
+            <CollectionView
+                ItemsSource="{Binding Routes}"
+                SelectionMode="None">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="12" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border
+                            Stroke="#C5C5C5"
+                            StrokeShape="RoundRectangle 8"
+                            Padding="14"
+                            StrokeThickness="1">
+                            <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto">
+                                <Label
+                                    Grid.Row="0"
+                                    Text="{Binding Title}"
+                                    FontAttributes="Bold" />
+                                <Label
+                                    Grid.Row="1"
+                                    Text="{Binding Description}"
+                                    FontSize="12"
+                                    Margin="0,6,0,0"
+                                    TextColor="#666" />
+                                <Button
+                                    Grid.Column="1"
+                                    Grid.RowSpan="2"
+                                    Text="{Binding ActionLabel}"
+                                    Padding="14,6"
+                                    Clicked="OnExecuteRoute"
+                                    CommandParameter="{Binding}" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Border
+                Stroke="#E0E0E0"
+                StrokeShape="RoundRectangle 8"
+                BackgroundColor="#F9F9F9"
+                Padding="14"
+                StrokeThickness="1">
+                <VerticalStackLayout Spacing="8">
+                    <HorizontalStackLayout Spacing="12">
+                        <Label Text="Navigation log" FontAttributes="Bold" />
+                        <Button
+                            Text="Clear"
+                            Padding="10,4"
+                            HorizontalOptions="End"
+                            Clicked="OnClearLog" />
+                    </HorizontalStackLayout>
+                    <CollectionView ItemsSource="{Binding NavigationLog}" SelectionMode="None">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="6" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Label
+                                    Text="{Binding}"
+                                    FontSize="12"
+                                    TextColor="#444" />
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
